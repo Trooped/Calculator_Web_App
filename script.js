@@ -1,8 +1,7 @@
 /**
  * Open:
- * -add a test to check logic before starting, else write ERROR
  * -style the page :)
- * -make sure decimals are correct + add a decimal point button + not too many deciamls after the dot
+ * add support for negative calculations (difficult as hell)
  */
 
 
@@ -110,7 +109,14 @@ if (tempString.length > 0){
         tempString = "";
         document.getElementById("screen").innerText = "ERROR";
     }
-    else{
+    else if (divByZero(tempString)){
+        tempString = "";
+        document.getElementById("screen").innerText = "Don't divide by 0";
+    }
+    else if (tempString.length==1){
+        document.getElementById("screen").innerText = tempString;
+    }
+    else{ //First, let's calculate the x and / operations, and add the result to later calculate using + and -
     while (tempString.indexOf('x') !== -1 || tempString.indexOf('/') !== -1) {
         let indexX = tempString.indexOf('x');
         let indexSlash = tempString.indexOf('/');
@@ -154,13 +160,14 @@ if (tempString.length > 0){
 
             let tempResult = operate(firstNum, operator, secondNum);
             tempResult= parseFloat(tempResult);
+            var roundedResult = Math.round(tempResult * 1000) / 1000; //rounding to 2 decimals
+
 
             // Replace the operation string in tempString with the result
-            tempString = tempString.slice(0, startIndex) + tempResult.toString() + tempString.slice(endIndex);
+            tempString = tempString.slice(0, startIndex) + roundedResult.toString() + tempString.slice(endIndex);
 
-
-            result = tempResult.toString(); //may need to change it!!!!!!
-            tempString=result;
+            result = roundedResult.toString();
+            tempString = result;
         }
     }
 //Calculating the + and - logic!
@@ -191,10 +198,11 @@ if (tempString.length > 0){
                 let secondNum = parseFloat(tempString.slice(operationIndex + 1, endIndex + 1));
         
                 let tempResult = operate(firstNum, operator, secondNum).toString();
+                var roundedResult = Math.round(tempResult * 1000) / 1000; //changing to 2 decimals
 
-                tempString = tempString.slice(0, startIndex) + tempResult.toString() + tempString.slice(endIndex + 1);
+                tempString = tempString.slice(0, startIndex) + roundedResult.toString() + tempString.slice(endIndex + 1);
 
-                result = tempResult.toString(); // Assuming the operation can result in non-integer values
+                result = roundedResult.toString(); // Assuming the operation can result in non-integer values
             } else {
                 break;
             }
@@ -202,7 +210,8 @@ if (tempString.length > 0){
 
             document.getElementById("screen").innerText = result;
             tempString=result;
-    operationString= "";
+
+            operationString= "";
     }
     }
 })
@@ -212,5 +221,13 @@ function checkCorrect(cur){
 }
 
 function validTest(tempString){
-    return (typeof tempString.charAt(0) === "number" && typeof tempString.charAt(tempString.length-1)=== "number")
+    return (typeof parseInt(tempString.charAt(0)) === "number" && typeof parseInt(tempString.charAt(tempString.length-1))=== "number")
+}
+
+function divByZero(tempString){
+    for (var i = 0; i< tempString.length; i++){
+        if (parseInt(tempString.charAt(i)) == 0 && tempString.charAt(i-1) == '/'){
+            return true;
+        }
+    }
 }
