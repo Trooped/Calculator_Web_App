@@ -103,6 +103,9 @@ document.querySelectorAll('.click-button').forEach(button => {
 const deleteBtn = document.getElementById('delete');
 deleteBtn.addEventListener('click', function(){
     if (tempString.length>0){
+        if (checkCorrect(tempString.charAt(length-1))){
+            signFlag = true;
+        }
         tempString = tempString.slice(0,-1);
         document.getElementById("screen").innerText = tempString;
     }
