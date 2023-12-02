@@ -1,6 +1,5 @@
 /**
  * Open:
- * -add a delete last button
  * -add a test to check logic before starting, else write ERROR
  * -style the page :)
  * -make sure decimals are correct + add a decimal point button + not too many deciamls after the dot
@@ -62,11 +61,37 @@ function updateScreen(buttonText) {
     }
 }
 
+var signFlag = false; //if it's false, you can't use sign operators. positive- you can
+var dotFlag = false; //same as before
 document.querySelectorAll('.click-button').forEach(button => {
     button.addEventListener('click', function() {
-        updateScreen(this.innerText); // Use the text of the clicked button
+        if(this.classList.contains('sign')){
+            if (signFlag == true){
+                signFlag = false;
+                updateScreen(this.innerText);
+            }
+        }
+        else if(this.classList.contains('dot')){
+            if (dotFlag == true){
+                dotFlag = false;
+                updateScreen(this.innerText);
+            }
+        }
+        else if (!this.classList.contains('sign')){
+            signFlag = true;
+            dotFlag = true;
+            updateScreen(this.innerText); // Use the text of the clicked button
+        }
     });
 });
+
+const deleteBtn = document.getElementById('delete');
+deleteBtn.addEventListener('click', function(){
+    if (tempString.length>0){
+        tempString = tempString.slice(0,-1);
+        document.getElementById("screen").innerText = tempString;
+    }
+})
 
 const clearBtn = document.getElementById('clear');
 clearBtn.addEventListener('click', function() {
@@ -74,12 +99,18 @@ clearBtn.addEventListener('click', function() {
     document.getElementById("screen").innerText = "";
 })
 
+
+
 const equals = document.getElementById('equals');
 equals.addEventListener('click', function() {
-    var tempcalc = 0;
     var result = 0;
     //add a method that checks if we have the correct nubmer of stuff + correct logic + divisible by 3 etc, e.g 1x2+3/4
-
+if (tempString.length > 0){
+    if (!validTest(tempString)){
+        tempString = "";
+        document.getElementById("screen").innerText = "ERROR";
+    }
+    else{
     while (tempString.indexOf('x') !== -1 || tempString.indexOf('/') !== -1) {
         let indexX = tempString.indexOf('x');
         let indexSlash = tempString.indexOf('/');
@@ -172,10 +203,14 @@ equals.addEventListener('click', function() {
             document.getElementById("screen").innerText = result;
             tempString=result;
     operationString= "";
-    //tempString = "";
-    tempcalc = 0;
+    }
+    }
 })
 
 function checkCorrect(cur){
     return !(cur == '+' || cur=='-'||cur=='x'||cur=='/');
+}
+
+function validTest(tempString){
+    return (typeof tempString.charAt(0) === "number" && typeof tempString.charAt(tempString.length-1)=== "number")
 }
