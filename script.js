@@ -50,6 +50,22 @@ function operate(first, operator, second){
     return result;
 }
 
+document.addEventListener('keydown', function(event) {
+    // Check if the pressed key matches any button data-key attribute
+
+    if (event.key === "Enter"){
+        equals.click();
+    }
+    if (event.key === "Backspace"){
+        deleteBtn.click();
+    }
+
+    const button = document.querySelector(`.click-button[data-key="${event.key}"]`);
+    if (button) {
+        button.click(); // Trigger the click event on the matched button
+    }
+});
+
 var tempString = ""; //The string containing the button values, and also the result at the end
 //this function updates the screen with the button values on click (also the tempString)
 function updateScreen(buttonText) {
@@ -129,6 +145,7 @@ if (tempString.length > 0){
         } else if (indexSlash !== -1) {
             operationIndex = indexSlash;
         }
+        console.log(indexX)
     
         // If an operation is found, extract and remove the substring
         if (operationIndex !== -1) {
@@ -160,14 +177,14 @@ if (tempString.length > 0){
 
             let tempResult = operate(firstNum, operator, secondNum);
             tempResult= parseFloat(tempResult);
-            var roundedResult = Math.round(tempResult * 1000) / 1000; //rounding to 2 decimals
+            var roundedResult = Math.round(tempResult * 100000) / 100000; //rounding to 2 decimals
 
 
             // Replace the operation string in tempString with the result
             tempString = tempString.slice(0, startIndex) + roundedResult.toString() + tempString.slice(endIndex);
 
             result = roundedResult.toString();
-            tempString = result;
+            console.log(tempString)
         }
     }
 //Calculating the + and - logic!
@@ -198,9 +215,10 @@ if (tempString.length > 0){
                 let secondNum = parseFloat(tempString.slice(operationIndex + 1, endIndex + 1));
         
                 let tempResult = operate(firstNum, operator, secondNum).toString();
-                var roundedResult = Math.round(tempResult * 1000) / 1000; //changing to 2 decimals
+                var roundedResult = Math.round(tempResult * 100000) / 100000; //changing to 2 decimals
 
                 tempString = tempString.slice(0, startIndex) + roundedResult.toString() + tempString.slice(endIndex + 1);
+                console.log(tempString)
 
                 result = roundedResult.toString(); // Assuming the operation can result in non-integer values
             } else {
