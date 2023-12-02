@@ -5,45 +5,51 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="script.js" defer></script>  
     <title>Document</title>
 </head>
 <body>
     <div class="container">
         <div class="calc">
             <div class="top-section">
-                <div class="screen">12345</div>
+                <div id="screen"></div>
             </div>
             <div class="bottom-section">
                 <!-- Rows for buttons -->
                 <div class="row">
-                    <button>1</button>
-                    <button>2</button>
-                    <button>3</button>
-                    <button>clear</button>
+                    <button class="click-button">1</button>
+                    <button class="click-button">2</button>
+                    <button class="click-button">3</button>
+                    <div id="topSmall" class="small-buttons">
+                        <button id="delete">del</button>
+                        <button id="clear">clr</button>
+                    </div>
+
                 </div>
                 <div class="row">
-                    <button>4</button>
-                    <button>5</button>
-                    <button>6</button>
+                    <button class="click-button">4</button>
+                    <button class="click-button">5</button>
+                    <button class="click-button">6</button>
                     <div class="small-buttons">
-                        <button>+</button>
-                        <button>-</button>
+                        <button class="click-button">+</button>
+                        <button class="click-button">-</button>
                     </div>
                 </div>
                 <div class="row">
-                    <button>7</button>
-                    <button>8</button>
-                    <button>9</button>
+                    <button class="click-button">7</button>
+                    <button class="click-button">8</button>
+                    <button class="click-button">9</button>
                     <div class="small-buttons">
-                        <button>X</button>
-                        <button>/</button>
+                        <button class="click-button">x</button>
+                        <button class="click-button">/</button>
                     </div>
                 </div>
                 <div class="row">
                     <div class="large-button">
-                        <button>0</button>
+                        <button class="click-button">0</button>
+                        <button class="click-button">.</button>
                     </div>
-                    <button>=</button>
+                    <button id="equals">=</button>
                 </div>
             </div>
         </div>

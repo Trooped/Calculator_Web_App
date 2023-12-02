@@ -72,6 +72,9 @@ button {
     flex: 1;
     margin: 2px;
 }
+#topSmall{
+    flex-direction: column;
+}
 
 .large-button {
     flex: 3;
