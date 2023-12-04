@@ -14,16 +14,19 @@
 </head>
 <body>
     <div class="container">
+        <div class="leftSide">
+            <div class="Headline">Calculator</div>
+            <div class="subHeadline">A Small Web Calculator App to Test my HTML, CSS & JavaScript Skills!</div>
+        </div>
         <div class="calc">
             <div id="screen" class="top-section">
-
             </div>
             <div class="bottom-section">
                 <!-- Rows for buttons -->
                 <div class="row">
-                    <button class="buttonDark " id="clear">C</button>
-                    <button class="click-button buttonDark neg">+/-</button>
-                    <button class="click-button buttonDark ">^</button>
+                    <button class="buttonDark " id="clear" data-key="c">C</button> <!--maybe change it to escape?-->
+                    <button class="click-button buttonDark neg" data-key="n">+/-</button>
+                    <button class="click-button buttonDark" data-key="^">^</button>
                     <button class="click-button buttonPurple operation" data-key="/">÷</button>
                 </div>
                 <div class="row">
@@ -54,7 +57,7 @@
         </div>
     </div>
     <div class="footer">
-        <div class="footer-text">Made by: Omri Peretz</div>
+        <div class="footer-text">Created By: Omri Peretz</div>
     </div>
 </body>
 </html>

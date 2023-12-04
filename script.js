@@ -1,8 +1,10 @@
 /**
  * Open:
- * -style the page (more modern and make it suitable for phones etc.)
- * -add a square and square root buttons and functions
- * -fix the bug if i write 536x and then press result (why does it enter into never ending loop!)
+ * -Maybe change some of the other styles
+ * -add my git link and small git link, change name to Trooped!
+ * -change the name of the project? maybe
+ * -check if the page is suitable for a smartphone
+ * -add hover on change color buttons
  */
 
 
@@ -27,6 +29,9 @@ function multiply(first, second){
 function divide(first, second){
     return first / second;
 }
+function square(first, second){
+    return Math.pow(first, second);
+}
 
 /////////////////////////
 var firstNum=0;
@@ -50,8 +55,11 @@ function operate(first, operator, second){
         case 'x':
             result = multiply(first, second);
             break;
-        case '/':
+        case '÷':
             result = divide(first,second);
+            break;
+        case '^':
+            result = square(first,second);
             break;
     }
     console.log(result)
@@ -79,7 +87,7 @@ document.addEventListener('keydown', function(event) {
 var expressionString = ""; //The string containing the button values, and also the result at the end
 //this function updates the screen with the button values on click (also the expressionString)
 function updateScreen(buttonText) {
-    if (expressionString.length < 15){
+    if (expressionString.length < 13){
         expressionString += buttonText; // Append to temp string
         console.log(expressionString)
         document.getElementById("screen").innerText += buttonText; // Append to screen div
@@ -95,7 +103,7 @@ var dot_opFlag = true; //flag for using decimals after an operation
 var dot_numFlag = false; //flag for using dec after a number
 document.querySelectorAll('.click-button').forEach(button => {
     button.addEventListener('click', function() {
-        if(this.innerText == '+' || this.innerText == 'x' || this.innerText == '/'){ //manages the + x / operations
+        if(this.innerText == '+' || this.innerText == 'x' || this.innerText == '÷' || this.innerText =='^'){ //manages the + x ÷ operations
             if (operatorFlag == true){
                 operatorFlag = false;
                 minusFlag = true;
@@ -132,7 +140,7 @@ document.querySelectorAll('.click-button').forEach(button => {
             updateScreen(this.innerText);
         }
         //manages the numbers!
-        else if (this.innerText != '-' && this.innerText != '+' && this.innerText != '/' && this.innerText != 'x' && this.innerText != '+/-'){ //one of the numbers/clear/equals
+        else if (this.innerText != '-' && this.innerText != '+' && this.innerText != '÷' && this.innerText != 'x' && this.innerText != '+/-' && this.innerText!= '^'){ //one of the numbers/clear/equals
             operatorFlag = true;
             minusFlag = true;
             dot_numFlag = true;
@@ -155,6 +163,7 @@ deleteBtn.addEventListener('click', function(){
 //This is a clear button operation, clears the screen and resets the String to null
 const clearBtn = document.getElementById('clear');
 clearBtn.addEventListener('click', function() {
+    negativeFlag = false;
     expressionString = "";
     document.getElementById("screen").innerText = "";
 })
@@ -167,72 +176,100 @@ const equals = document.getElementById('equals');
 equals.addEventListener('click', function() {
     var result = 0;
 if (expressionString.length > 2){ //checks that the expression is more than 2 chars
-    if (!validTest(expressionString)){ //checks that expression is valid, else- error
-        expressionString = "";
-        document.getElementById("screen").innerText = "ERROR";
-    }
-    else if (divByZero(expressionString)){ //checks if we divide by 0
+    if (divByZero(expressionString)){ //checks if we divide by 0
         expressionString = "";
         document.getElementById("screen").innerText = "Don't divide by 0";
     }
-    else if (expressionString.indexOf('x')==-1 && expressionString.indexOf('+') ==-1 && expressionString.indexOf('+')==-1 || expressionString.indexOf('-')!=-1){
+    else if (!validTest(expressionString)){ //checks that expression is valid, else- error
+        expressionString = "";
+        document.getElementById("screen").innerText = "ERROR";
+    }
+    else if (expressionString.indexOf('x')==-1 && expressionString.indexOf('+') ==-1 && expressionString.indexOf('÷')==-1 && expressionString.indexOf('-')==-1 && expressionString.indexOf('^')==-1){
         document.getElementById("screen").innerText = expressionString;
     }
-    else{ //First, let's calculate the x and / operations, and add the result to later calculate using + and -
-    while (expressionString.indexOf('x') !== -1 || expressionString.indexOf('/') !== -1) {
-        let indexX = expressionString.indexOf('x');
-        let indexSlash = expressionString.indexOf('/');
-        let operationIndex = -1;
-        let operationString = "";
-    
-        // Determine which operation comes first (if any)
-        if (indexX !== -1 && (indexX < indexSlash || indexSlash === -1)) {
-            operationIndex = indexX;
-        } else if (indexSlash !== -1) {
-            operationIndex = indexSlash;
-        }
-        console.log(indexX)
-    
-        // If an operation is found, extract and remove the substring
-        if (operationIndex !== -1) {
-            // Adjust the indices to include the surrounding characters
-
-            if (operationIndex > 0) {
-                var startIndex = operationIndex - 1;
-                while (startIndex >= 0 && checkPrevChar(expressionString.charAt(startIndex))) {
+    else{ //First, let's calculate the power operations
+        while (expressionString.indexOf('^') !== -1) {
+            var indexPow = expressionString.indexOf('^');
+            if (indexPow !== -1) {
+                let startIndex = indexPow;
+                while (startIndex > 0 && checkPrevChar(expressionString.charAt(startIndex - 1))) {
                     startIndex--;
                 }
-                startIndex++; // Adjust to point to the start of the number
-            }
-            
-            if (operationIndex < expressionString.length - 1) {
-                var endIndex = operationIndex + 1;
-                while (endIndex < expressionString.length && checkPrevChar(expressionString.charAt(endIndex))) {
+        
+                let endIndex = indexPow;
+                while (endIndex < expressionString.length - 1 && checkPrevChar(expressionString.charAt(endIndex + 1))) {
                     endIndex++;
                 }
-                // endIndex points to the index after the last digit of the second number
+
+                let firstNum = parseFloat(expressionString.slice(startIndex, indexPow));
+                let operator = expressionString.charAt(indexPow);
+                let secondNum = parseFloat(expressionString.slice(indexPow + 1, endIndex + 1));
+        
+                let tempResult = operate(firstNum, operator, secondNum);
+                console.log(tempResult)
+                var roundedResult = Math.round(tempResult * 10000) / 10000; //round to 4 decimals
+
+                expressionString = expressionString.slice(0, startIndex) + roundedResult.toString() + expressionString.slice(endIndex + 1);
+                console.log(expressionString)
+
+                result = roundedResult.toString();
             }
-            
-            // Extract the operation string
-            operationString = expressionString.slice(startIndex, endIndex);
-            
-            let firstNum = operationString.slice(0, operationIndex - startIndex);
-            let operator = expressionString.charAt(operationIndex);
-            let secondNum = operationString.slice(operationIndex - startIndex + 1);
-            
-
-            let tempResult = operate(firstNum, operator, secondNum);
-            tempResult= parseFloat(tempResult);
-            var roundedResult = Math.round(tempResult * 10000) / 10000; //rounding to 4 decimals
-
-
-            // Replace the operation string in expressionString with the result
-            expressionString = expressionString.slice(0, startIndex) + roundedResult.toString() + expressionString.slice(endIndex);
-
-            result = roundedResult.toString();
-            console.log(expressionString)
         }
-    }
+        //calculating the * and / operations
+        while (expressionString.indexOf('x') !== -1 || expressionString.indexOf('÷') !== -1) {
+            let indexX = expressionString.indexOf('x');
+            let indexSlash = expressionString.indexOf('÷');
+            let operationIndex = -1;
+            let operationString = "";
+        
+            // Determine which operation comes first (if any)
+            if (indexX !== -1 && (indexX < indexSlash || indexSlash === -1)) {
+                operationIndex = indexX;
+            } else if (indexSlash !== -1) {
+                operationIndex = indexSlash;
+            }
+            console.log(indexX)
+        
+            // If an operation is found, extract and remove the substring
+            if (operationIndex !== -1) {
+                // Adjust the indices to include the surrounding characters
+
+                if (operationIndex > 0) {
+                    var startIndex = operationIndex - 1;
+                    while (startIndex >= 0 && checkPrevChar(expressionString.charAt(startIndex))) {
+                        startIndex--;
+                    }
+                    startIndex++; // Adjust to point to the start of the number
+                }
+                
+                if (operationIndex < expressionString.length - 1) {
+                    var endIndex = operationIndex + 1;
+                    while (endIndex < expressionString.length && checkPrevChar(expressionString.charAt(endIndex))) {
+                        endIndex++;
+                    }
+                    // endIndex points to the index after the last digit of the second number
+                }
+                
+                // Extract the operation string
+                operationString = expressionString.slice(startIndex, endIndex);
+                
+                let firstNum = operationString.slice(0, operationIndex - startIndex);
+                let operator = expressionString.charAt(operationIndex);
+                let secondNum = operationString.slice(operationIndex - startIndex + 1);
+                
+
+                let tempResult = operate(firstNum, operator, secondNum);
+                tempResult= parseFloat(tempResult);
+                var roundedResult = Math.round(tempResult * 10000) / 10000; //rounding to 4 decimals
+
+
+                // Replace the operation string in expressionString with the result
+                expressionString = expressionString.slice(0, startIndex) + roundedResult.toString() + expressionString.slice(endIndex);
+
+                result = roundedResult.toString();
+                console.log(expressionString)
+            }
+        }
 //Calculating the + and - logic! (it's actually only +, because every is treated as x+-y )
         while (expressionString.indexOf('+') !== -1) {
             var indexPlus = expressionString.indexOf('+');
@@ -274,18 +311,26 @@ if (expressionString.length > 2){ //checks that the expression is more than 2 ch
 
 //a function to check the previous character isn't one of the operations (apart from minus)
 function checkPrevChar(cur){
-    return !(cur == '+' || cur=='x'||cur=='/');
+    return !(cur == '+' || cur=='x'||cur=='÷' || cur =='^');
 }
 
 //a function to check if the expression is valid, meaning that the first character is a number or '-', and the last character is a number
-function validTest(expressionString){
-    return (typeof parseInt(expressionString.charAt(0)) == "number" || expressionString.charAt(0) == '-' && typeof parseInt(expressionString.charAt(expressionString.length-1))== "number")
+function validTest(expressionString) {
+    // Check if the first character is not a number and not a minus sign
+    var isFirstCharValid = !isNaN(parseFloat(expressionString.charAt(0))) || expressionString.charAt(0) === '-';
+
+    // Check if the last character is not a number
+    var isLastCharValid = !isNaN(parseFloat(expressionString.charAt(expressionString.length - 1)));
+
+    // The expression is valid if both the first and last characters are valid
+    return isFirstCharValid && isLastCharValid;
 }
+
 
 //a function that checks if we divide our expression by zero
 function divByZero(expressionString){
     for (var i = 0; i< expressionString.length; i++){
-        if (parseInt(expressionString.charAt(i)) == 0 && expressionString.charAt(i-1) == '/'){
+        if (parseInt(expressionString.charAt(i)) == 0 && expressionString.charAt(i-1) == '÷'){
             return true;
         }
     }
