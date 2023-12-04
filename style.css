@@ -1,10 +1,9 @@
 body, html {
-    height: 100%;
+    min-height: 100vh;
     margin: 0;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    flex-direction: column;
+    font-family: 'Quicksand', sans-serif;
 }
 
 .container {
@@ -17,73 +16,98 @@ body, html {
 .calc {
     display: flex;
     flex-direction: column;
-    width: 40vw; /* 50% of the viewport width */
-    height: 50vw; /* 80% of the viewport height */
+    width: 40vw; /* 40% of the viewport width */
+    height: 50vw; /* 50% of the viewport height */
     border: 2px solid black;
-    background-color: #333333;
+    background-color: #0c0d0e;
+    border-top-right-radius: 1%;
+    border-top-left-radius: 1%;
+    border-bottom-left-radius: 1%;
+    border-bottom-right-radius: 1%;
 }
 
 .top-section {
     display: flex;
+    border-top-right-radius: 1%;
+    border-top-left-radius: 1%;
     padding-bottom: 10px;
     padding-top:10px;
     flex: 30%;
-    background-color: #DCDCDC; /* Example color */
-    justify-content: center;
-    align-items: center;
+    background-color: #fafafa; /* Example color */
+    justify-content:right;
+    align-items:center;
+    text-align: right;
+    font-size: 85px;
 }
 
-#screen{
-    width: 90%; /* 90% of parent's width */
-    height: 90%; /* 90% of parent's height */
-    background-color: black; /* Black background for the screen */
-    color: #F5FFFA; /* Text color, if you have text */
-    margin: auto;
-    font-size: 85px;
-    text-align: right;
-    padding: 5px;  
-}
 
 .bottom-section {
     flex: 70%;
     display: flex;
     flex-direction: column;
+    margin-bottom: 1px;
+    font-family: 'Quicksand', sans-serif;
+    border-bottom-left-radius: 1%;
+    border-bottom-right-radius: 1%;
 }
 
 .row {
     display: flex;
     flex: 1;
-    padding: 5px;
 }
 
 button {
-    flex: 1;
-    margin: 5px;
-    background-color: #999999;
+    flex:1;
     font-size: 40px;
+    color:azure;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Quicksand', sans-serif;
 }
 
-.small-buttons {
+.buttonPurple{
+    background-color: #5f4bb7;
+}
+
+.buttonYellow#equals{
+    background-color: #fec208;
+    border-bottom-right-radius: 5%;
+}
+
+#zero{
+    border-bottom-left-radius: 5%;
+}
+  
+.buttonDark {
+    background-color: #1e2326;
+    background-size: auto 150%;
+    background-position: 0 100%; 
+    &:hover {background-position: 0 50%;}
+    
+    &:active {
+      color: #DCDCDC;
+      background-position: 0 50%;
+      background: #333333;
+      box-shadow: inset 0 2px 3px rgba(black, .5), 0 1px 1px rgba(white, .1);
+      
+    .icon:before {
+        color: #111;
+        text-shadow: 0 1px rgba(white, .1);
+      }
+    }
+    
+}
+
+
+.footer{
     display: flex;
-    flex: 1;
-    margin: 2px;
-    padding: 1%;
+    margin-top: auto;
+    flex-shrink: 5; 
+    background-color: #DCDCDC;
+    align-items: center;
+    justify-content: center;
 }
 
-.small-buttons button {
-    flex: 1;
-    margin: 6px;
-}
-#topSmall{
-    flex-direction: column;
-}
-
-.large-button {
-    flex: 3;
-    display: flex;
-}
-
-
-.large-button button {
-    flex: 1;
+.footer-text{
+    font-size: 30px;
 }
